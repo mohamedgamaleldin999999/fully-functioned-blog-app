@@ -1,3 +1,5 @@
+# Blog_Rails
+
 ## 📗 Table of Contents
 
 - [Blog\_Rails](#blog_rails)
@@ -11,9 +13,11 @@
     - [Prerequisites ](#prerequisites-)
   - [Usage ](#usage-)
   - [👥 Authors ](#-authors-)
+  - [🔭 Future Features ](#-future-features-)
   - [❓ FAQ ](#-faq-)
   - [🤝 Contributing ](#-contributing-)
   - [⭐️ Show Your Support ](#️-show-your-support-)
+  - [🙏 Acknowledgements](#acknowledgements)
   - [📜 License ](#-license-)
 
 ## 📖 Blog_Rails <a name="about-project"></a>
@@ -32,6 +36,8 @@ This project is built using Ruby on Rails, a dynamic, open-source programming la
 ## Key Features <a name="key-features"></a>
 - [x] **Rails new (setup)**
 - [x] **Data Model**
+- [x] **processing data in models**
+- [x] **Added hooks for data models**
 
 ## 💻 Getting Started <a name="getting-started"></a>
 
@@ -42,13 +48,13 @@ To get started with the Catalog of My Things app, follow the instructions below:
 1. Clone the project repository:
    bash
    `git clone https://github.com/mohamedgamaleldin999999/fully-functioned-blog-app`
-
+   
 
 2. Navigate to the project folder:
    bash
    `cd fully-functioned-blog-app`
 
-
+   
 
 ### Prerequisites <a name="prerequisites"></a>
 
@@ -68,7 +74,7 @@ Follow these steps to use the program:
 
    bash
    `cd /path/to/your/program/files`
-
+   
 
 3. Start your Ruby on Rails server
 
@@ -90,11 +96,20 @@ This project was developed by:
 - GitHub: [@githubhandle](https://github.com/mohamedgamaleldin999999)
 - Twitter: [@twitterhandle](https://twitter.com/Mohamme43086002)
 
+## 🔭 Future Features <a name="future-features"></a>
+
+- [ ] **Validate and model specs**
+- [ ] **Connect the model with frontend instead of using ruby console**
+- [ ] **Added unit test for created models**
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## ❓ FAQ <a name="faq"></a>
 
 *Q: Is there a plan to add more features to this application?*
 A: Yes, the author has plans to enhance this application's capabilities. One upcoming feature is to make the application executable via tactil, providing more convenience and accessibility to users.
-
+ 
 
 *Q: Where can I find more information about the Ruby programming language?*
 A: For more information about Ruby, its features, and its community, visit the official [Ruby website](https://www.ruby-lang.org/).
@@ -108,6 +123,12 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## ⭐️ Show Your Support <a name="support"></a>
 
 If you find this project helpful, consider giving it a ⭐️ to show your support!
+
+## 🙏 Acknowledgments <a name="acknowledgements"></a>
+
+I would like to thank Microverse for giving me the opportunity to work on this project.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 📜 License <a name="license"></a>
 
