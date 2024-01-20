@@ -24,7 +24,7 @@ RSpec.describe User, type: :model do
       (1..6).each do |n|
         user.posts.create(title: "Post #{n}", text: 'Content', created_at: n.days.ago)
       end
-
+      user.reload
       expect(user.recent_posts).to eq(user.posts.order(created_at: :desc).limit(3))
     end
   end
