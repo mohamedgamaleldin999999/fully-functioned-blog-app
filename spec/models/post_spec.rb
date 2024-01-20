@@ -27,7 +27,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate numericality of comments_counter' do
-      post = Post.new(user: user, title: 'Sample Title', liked_counter: 5, comments_counter: -1)
+      post = Post.new(user:, title: 'Sample Title', liked_counter: 5, comments_counter: -1)
       expect(post).not_to be_valid
       expect(post.errors[:comments_counter]).to include('must be greater than or equal to 0')
 
@@ -36,7 +36,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate numericality of liked_counter' do
-      post = Post.new(user: user, title: 'Sample Title', comments_counter: 0, liked_counter: -1)
+      post = Post.new(user:, title: 'Sample Title', comments_counter: 0, liked_counter: -1)
       expect(post).not_to be_valid
       expect(post.errors[:liked_counter]).to include('must be greater than or equal to 0')
 
@@ -47,9 +47,9 @@ RSpec.describe Post, type: :model do
 
   describe 'recent_comments' do
     it 'should return the most recent 5 comments' do
-      post = Post.create(user: user, title: 'post', liked_counter: 5, comments_counter: 4)
+      post = Post.create(user:, title: 'post', liked_counter: 5, comments_counter: 4)
       (1..10).each do |n|
-        post.comments.create(user: user, text: "Comment #{n}", created_at: n.hours.ago)
+        post.comments.create(user:, text: "Comment #{n}", created_at: n.hours.ago)
       end
 
       expect(post.recent_comments).to eq(post.comments.order(created_at: :desc).limit(5))
