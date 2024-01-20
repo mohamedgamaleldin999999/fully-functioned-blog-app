@@ -49,7 +49,7 @@ RSpec.describe Post, type: :model do
     it 'should return the most recent 5 comments' do
       post = Post.create(author: user, title: 'post', liked_counter: 5, comments_counter: 4)
       (1..10).each do |n|
-        post.comments.create(user: user, text: "Comment #{n}", created_at: n.hours.ago)
+        post.comments.create(:user => user, :text => "Comment #{n}", :created_at => n.hours.ago)
       end
 
       expect(post.recent_comments).to eq(post.comments.order(created_at: :desc).limit(5))
