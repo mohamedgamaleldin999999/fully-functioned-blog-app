@@ -18,7 +18,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate maximum length of title' do
-      post = Post.new(author: user, title: 'a' * 251, liked_counter: 5, comments_counter: 4)
+      post = Post.new(user: user, title: 'a' * 251, liked_counter: 5, comments_counter: 4)
       expect(post).not_to be_valid
       expect(post.errors[:title]).to include('is too long (maximum is 250 characters)')
 
@@ -27,7 +27,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate numericality of comments_counter' do
-      post = Post.new(author: user, title: 'Sample Title', liked_counter: 5, comments_counter: -1)
+      post = Post.new(user: user, title: 'Sample Title', liked_counter: 5, comments_counter: -1)
       expect(post).not_to be_valid
       expect(post.errors[:comments_counter]).to include('must be greater than or equal to 0')
 
@@ -36,7 +36,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate numericality of liked_counter' do
-      post = Post.new(author: user, title: 'Sample Title', comments_counter: 0, liked_counter: -1)
+      post = Post.new(user: user, title: 'Sample Title', comments_counter: 0, liked_counter: -1)
       expect(post).not_to be_valid
       expect(post.errors[:liked_counter]).to include('must be greater than or equal to 0')
 
@@ -47,7 +47,7 @@ RSpec.describe Post, type: :model do
 
   describe 'recent_comments' do
     it 'should return the most recent 5 comments' do
-      post = Post.create(author: user, title: 'post', liked_counter: 5, comments_counter: 4)
+      post = Post.create(user: user, title: 'post', liked_counter: 5, comments_counter: 4)
       (1..10).each do |n|
         post.comments.create(user: user, text: "Comment #{n}", created_at: n.hours.ago)
       end
@@ -57,7 +57,7 @@ RSpec.describe Post, type: :model do
   end
 
   describe 'update_user_posts_counter' do
-    it "should  the author's posts_counter equal 0 intially" do
+    it "should  the user's posts_counter equal 0 intially" do
       user = User.create(name: 'John Doe', posts_counter: 0)
       expect(user.posts_counter).to eq(0)
     end
