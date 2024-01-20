@@ -7,8 +7,8 @@ RSpec.describe Comment, type: :model do
                          bio: 'A genius Backend developer from Egypt.')
       post = Post.create(author: user, title: 'post', liked_counter: 4, comments_counter: 0)
       Comment.create(post:)
-
-      expect(post.comments_counter).to eq(0)
+      post.reload
+      expect(post.comments_counter).to eq(1)
     end
   end
 end
