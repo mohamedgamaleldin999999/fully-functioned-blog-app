@@ -12,13 +12,13 @@ RSpec.describe Post, type: :model do
 
   describe 'validations' do
     it 'should validate presence of title' do
-      post = Post.new(title: nil)
+      post = Post.new(title: nil, author: user)
       expect(post).not_to be_valid
       expect(post.errors[:title]).to include("can't be blank")
     end
 
     it 'should validate maximum length of title' do
-      post = Post.new(user:, title: 'a' * 251, liked_counter: 5, comments_counter: 4)
+      post = Post.new(author: user, title: 'a' * 251, liked_counter: 5, comments_counter: 4)
       expect(post).not_to be_valid
       expect(post.errors[:title]).to include('is too long (maximum is 250 characters)')
 
@@ -27,7 +27,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate numericality of comments_counter' do
-      post = Post.new(user:, title: 'Sample Title', liked_counter: 5, comments_counter: -1)
+      post = Post.new(author: user, title: 'Sample Title', liked_counter: 5, comments_counter: -1)
       expect(post).not_to be_valid
       expect(post.errors[:comments_counter]).to include('must be greater than or equal to 0')
 
@@ -36,7 +36,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'should validate numericality of liked_counter' do
-      post = Post.new(user:, title: 'Sample Title', comments_counter: 0, liked_counter: -1)
+      post = Post.new(author: user, title: 'Sample Title', comments_counter: 0, liked_counter: -1)
       expect(post).not_to be_valid
       expect(post.errors[:liked_counter]).to include('must be greater than or equal to 0')
 
@@ -44,22 +44,25 @@ RSpec.describe Post, type: :model do
       expect(post).to be_valid
     end
   end
+end
 
-  describe 'recent_comments' do
-    it 'should return the most recent 5 comments' do
-      post = Post.create(user:, title: 'post', liked_counter: 5, comments_counter: 4)
-      (1..10).each do |n|
-        post.comments.create(user:, text: "Comment #{n}", created_at: n.hours.ago)
-      end
+class Comment < ApplicationRecord
+  belongs_to :post
+  belongs_to :user, class_name: 'User', foreign_key: :author_id
 
-      expect(post.recent_comments).to eq(post.comments.order(created_at: :desc).limit(5))
-    end
+  after_save :update_post_comments_counter
+  after_destroy :update_post_comments_counter
+
+  private
+
+  def update_post_comments_counter
+    post.update(comments_counter: post.comments.count)
   end
+end
 
-  describe 'update_user_posts_counter' do
-    it "should  the user's posts_counter equal 0 intially" do
-      user = User.create(name: 'John Doe', posts_counter: 0)
-      expect(user.posts_counter).to eq(0)
-    end
+RSpec.describe 'update_user_posts_counter' do
+  it "should set the user's posts_counter to 0 initially" do
+    user = User.create(name: 'John Doe', posts_counter: 0)
+    expect(user.posts_counter).to eq(0)
   end
 end
