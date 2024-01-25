@@ -9,12 +9,12 @@ RSpec.describe PostsController, type: :request do
     FactoryBot.create(:post, author: user, title: 'Post3', liked_counter: 0, comments_counter: 0)
 
     it 'returns a success response' do
-      get '/users/#{user.id}/posts'
+      get "/users/#{user.id}/posts"
       expect(response).to have_http_status(:success)
     end
 
     it 'renders the index template' do
-      get '/users/#{user.id}/posts'
+      get "/users/#{user.id}/posts"
       expect(response).to render_template(:index)
     end
 
