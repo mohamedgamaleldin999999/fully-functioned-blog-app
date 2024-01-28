@@ -33,7 +33,7 @@
                 <% @post.comments.each do |comment| %>
                     <li class="list-group-item py-2">
                         <span class="fw-bold">
-                            <%= comment.author.name %>:
+                            <%= comment.user.name %>:
                         </span>
                         <%= comment.text %>
                     </li>
