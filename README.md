@@ -91,10 +91,15 @@ Follow these steps to use the program:
 
 This project was developed by:
 
-### 👤 **Mohamed-Gamaleldin**
+### 👤 **Mohamed Gamaleldin**
 
 - GitHub: [@githubhandle](https://github.com/mohamedgamaleldin999999)
 - Twitter: [@twitterhandle](https://twitter.com/Mohamme43086002)
+
+### 👤 **Mark Rubanza**
+
+- GitHub: [@banzaman](https://github.com/banzaman/)
+- LinkedIn: [Mark Rubanza Anderson](https://www.linkedin.com/in/mark-rubanza-anderson/)
 
 ## 🔭 Future Features <a name="future-features"></a>
 
