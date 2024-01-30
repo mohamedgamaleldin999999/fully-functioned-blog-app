@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @user = User.find(params[:user_id])
+    @user = User.includes(:posts, :comments).find(params[:user_id])
     @posts = @user.posts
   end
 
@@ -14,12 +14,11 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params.merge(liked_counter: 0, comments_counter: 0))
-    @post.author = User.find(params[:user_id])
+    @post = current_user.posts.new(post_params.merge(liked_counter: 0, comments_counter: 0))
     if @post.save
       redirect_to user_post_path(@post.author, @post)
     else
-      flash.now[:alert] = 'Post creation failed!'
+      flash.now[:alert] = "Post creation failed!"
       render :new
     end
   end
