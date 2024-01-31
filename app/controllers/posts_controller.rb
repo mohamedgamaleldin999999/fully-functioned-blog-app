@@ -18,7 +18,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to user_post_path(@post.author, @post)
     else
-      flash.now[:alert] = "Post creation failed!"
+      flash.now[:alert] = 'Post creation failed!'
       render :new
     end
   end
