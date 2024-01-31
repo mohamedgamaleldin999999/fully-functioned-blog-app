@@ -33,6 +33,7 @@ describe 'Posts index page', type: :feature do
 
   it 'displays the first comments on a post' do
     expect(page).to have_content('Comments')
+    expect(page).to have_content('Comment 2')
   end
 
   it 'displays the number of comments a post has' do
