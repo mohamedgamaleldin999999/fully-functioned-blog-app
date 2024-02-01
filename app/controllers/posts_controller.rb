@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   def index
     @user = User.find(params[:user_id])
-    @posts = @user.posts
+    @posts = @user.posts.includes(:comments)
   end
 
   def show
@@ -14,8 +14,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params.merge(liked_counter: 0, comments_counter: 0))
-    @post.author = User.find(params[:user_id])
+    @post = current_user.posts.new(post_params.merge(liked_counter: 0, comments_counter: 0))
     if @post.save
       redirect_to user_post_path(@post.author, @post)
     else

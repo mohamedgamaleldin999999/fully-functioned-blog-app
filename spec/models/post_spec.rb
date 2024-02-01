@@ -12,7 +12,7 @@ RSpec.describe Post, type: :model do
 
   describe 'validations' do
     it 'should validate presence of title' do
-      post = Post.new(title: nil, author: user)
+      post = Post.new(title: nil)
       expect(post).not_to be_valid
       expect(post.errors[:title]).to include("can't be blank")
     end
@@ -44,25 +44,22 @@ RSpec.describe Post, type: :model do
       expect(post).to be_valid
     end
   end
-end
 
-class Comment < ApplicationRecord
-  belongs_to :post
-  belongs_to :user, class_name: 'User', foreign_key: :author_id
+  describe 'recent_comments' do
+    it 'should return the most recent 5 comments' do
+      post = Post.create(author: user, title: 'post', liked_counter: 5, comments_counter: 4)
+      (1..10).each do |n|
+        post.comments.create(author: user, text: "Comment #{n}", created_at: n.hours.ago)
+      end
 
-  after_save :update_post_comments_counter
-  after_destroy :update_post_comments_counter
-
-  private
-
-  def update_post_comments_counter
-    post.update(comments_counter: post.comments.count)
+      expect(post.recent_comments).to eq(post.comments.order(created_at: :desc).limit(5))
+    end
   end
-end
 
-RSpec.describe 'update_user_posts_counter' do
-  it "should set the user's posts_counter to 0 initially" do
-    user = User.create(name: 'John Doe', posts_counter: 0)
-    expect(user.posts_counter).to eq(0)
+  describe 'update_user_posts_counter' do
+    it "should  the author's posts_counter equal 0 intially" do
+      user = User.create(name: 'John Doe', posts_counter: 0)
+      expect(user.posts_counter).to eq(0)
+    end
   end
 end

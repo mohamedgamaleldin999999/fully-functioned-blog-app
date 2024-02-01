@@ -1,5 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'capybara/rspec'
+require 'database_cleaner'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -20,7 +22,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort.each { |f| require f }
+# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -31,17 +33,34 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_paths = [
-    Rails.root.join('spec/fixtures')
-  ]
+  config.fixture_path = "#{Rails.root}/spec/fixtures"
+  config.before(:example, disable_cache: true) do
+    allow(Rails).to receive(:cache).and_return(ActiveSupport::Cache::NullStore.new)
+  end
 
+  config.after(:example, disable_cache: true) do
+    allow(Rails).to receive(:cache).and_call_original
+  end
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
 
+  config.before(:suite) do
+    if config.filter_manager.inclusions.rules.key?(:feature)
+      # Add your specific configuration for the /spec/views folder
+      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.clean
+    end
+  end
+
+  config.around(:each, :feature) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
   # You can uncomment this line to turn off ActiveRecord support entirely.
-  # config.use_active_record = false
+  config.use_active_record = false
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
