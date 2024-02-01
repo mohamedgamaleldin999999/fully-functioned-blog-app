@@ -1,7 +1,9 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @user = User.find(params[:user_id])
-    @posts = @user.posts.includes(:comments)
+    @user = User.includes(:posts, :comments).find(params[:user_id])
+    @posts = @user.posts
   end
 
   def show
@@ -18,7 +20,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to user_post_path(@post.author, @post)
     else
-      flash.now[:alert] = 'Post creation failed!'
+      flash.now[:alert] = "Post creation failed!"
       render :new
     end
   end
