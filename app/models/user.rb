@@ -1,16 +1,24 @@
-
 class User < ApplicationRecord
-devise :database_authenticatable, :registerable,
-:recoverable, :rememberable, :validatable, :confirmable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable, :confirmable
 
-def recent_posts
-posts.order(created_at: :desc).limit(3)
-end
+  # Add the following lines manually
+  before_create :generate_confirmation_token
 
-has_many :posts, foreign_key: :author_id
-has_many :likes, foreign_key: :author_id
-has_many :comments, foreign_key: :author_id
+  def recent_posts
+    posts.order(created_at: :desc).limit(3)
+  end
 
-validates :name, presence: true
-validates :posts_counter, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  protected
+
+  def generate_confirmation_token
+    self.confirmation_token = SecureRandom.urlsafe_base64
+  end
+
+  has_many :posts, foreign_key: :author_id
+  has_many :likes, foreign_key: :author_id
+  has_many :comments, foreign_key: :author_id
+
+  validates :name, presence: true
+  validates :posts_counter, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 end
