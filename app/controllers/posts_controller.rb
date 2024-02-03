@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
 
   def index
     @user = User.includes(:posts, :comments).find(params[:user_id])
@@ -20,8 +21,17 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to user_post_path(@post.author, @post)
     else
-      flash.now[:alert] = 'Post creation failed!'
+      flash.now[:alert] = "Post creation failed!"
       render :new
+    end
+  end
+
+  def destroy
+    if @post.destroy
+      redirect_to user_posts_path(@post.author), notice: "Post deleted successfully."
+    else
+      flash[:alert] = "You are not authorized to delete that post."
+      render :show
     end
   end
 
