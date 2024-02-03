@@ -22,9 +22,9 @@ class CommentsController < ApplicationController
     authorize! :destroy, @comment
 
     if @comment.destroy
-      redirect_to user_post_path(params[:user_id], params[:post_id]), notice: "Comment deleted successfully."
+      redirect_to user_post_path(params[:user_id], params[:post_id]), notice: 'Comment deleted successfully.'
     else
-      flash[:alert] = "Failed to delete the comment."
+      flash[:alert] = 'Failed to delete the comment.'
       render :show
     end
   end
