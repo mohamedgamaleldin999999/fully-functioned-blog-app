@@ -1,17 +1,21 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
+
   def index
     @user = User.includes(:posts, :comments).find(params[:user_id])
     @posts = @user.posts
   end
+
   def show
     @user = User.find(params[:user_id])
     @post = @user.posts.find(params[:id])
   end
+
   def new
     @post = Post.new
   end
+
   def create
     @post = current_user.posts.new(post_params.merge(liked_counter: 0, comments_counter: 0))
     if @post.save
@@ -21,6 +25,7 @@ class PostsController < ApplicationController
       render :new
     end
   end
+
   def destroy
     if @post.destroy
       redirect_to user_posts_path(@post.author), notice: 'Post deleted successfully.'
@@ -29,7 +34,9 @@ class PostsController < ApplicationController
       render :show
     end
   end
+
   private
+
   def post_params
     params.require(:post).permit(:title, :text, :liked_counter, :comments_counter)
   end
